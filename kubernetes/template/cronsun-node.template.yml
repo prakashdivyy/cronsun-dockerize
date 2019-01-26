@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cronsun-node
+  namespace: ${K8S_NAMESPACE}
+  labels:
+    io.kompose.service: cronsun-node
+spec:
+  type: ClusterIP
+  ports:
+    - name: "7079"
+      port: 7079
+      targetPort: 7079
+  selector:
+    io.kompose.service: cronsun-node
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cronsun-node
+  namespace: "${K8S_NAMESPACE}"
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: cronsun-node
+  template:
+    metadata:
+      labels:
+        io.kompose.service: cronsun-node
+    spec:
+      containers:
+        - name: cronsun-node
+          image: docker.io/prakashdivyy/cronsun-node:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_HOST
+              value: "${MONGO_HOST}"
+            - name: MONGO_PORT
+              value: "${MONGO_PORT}"
+            - name: MONGO_USER
+              value: "${MONGO_USER}"
+            - name: MONGO_PASSWORD
+              value: "${MONGO_PASSWORD}"
+            - name: MONGO_DATABASE
+              value: "${MONGO_DATABASE}"
+            - name: ETCD_HOST
+              value: "${ETCD_HOST}"
+            - name: ETCD_PORT
+              value: "${ETCD_PORT}"
+            - name: ETCD_USER
+              value: "${ETCD_USER}"
+            - name: ETCD_PASSWORD
+              value: "${ETCD_PASSWORD}"
