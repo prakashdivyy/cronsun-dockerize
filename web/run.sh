@@ -49,7 +49,7 @@ if [ -z ${ETCD_PASSWORD+x} ]; then
         ETCD_PASSWORD=""
 fi
 
-ETCD_HOST_PORT="${ETCD_HOST}:${ETCD_PORT}"
+ETCD_HOST_PORT="http://${ETCD_HOST}:${ETCD_PORT}"
 
 jq -e --arg etcdhostport "$ETCD_HOST_PORT" '(."Endpoints"[0]) = $etcdhostport' etcd.json > etcd.json.tmp && cp etcd.json.tmp etcd.json
 jq -e --arg etcdusername "$ETCD_USER" '(."Username") = $etcdusername' etcd.json > etcd.json.tmp && cp etcd.json.tmp etcd.json
