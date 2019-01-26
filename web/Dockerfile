@@ -6,5 +6,6 @@ RUN apk add unzip jq && \
     apk del --purge unzip && \
     rm -Rf cronsun-v0.3.5* /var/cache/apk/* && \
     rm -rf /bin/cronnode /bin/csctl
+EXPOSE      7079
 ADD         run.sh /bin/run.sh
 ENTRYPOINT  ["/bin/run.sh"]
